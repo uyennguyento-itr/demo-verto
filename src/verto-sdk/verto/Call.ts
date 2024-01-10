@@ -231,7 +231,6 @@ export default class Call {
   }
 
   public setState(state: CallStateItem): boolean {
-    console.log("🚀 ~ file: Call.ts:234 ~ Call ~ setState ~ state:", state)
     if (this.state === ENUM.state.ringing) {
       // this.stopRinging(); // TODO set a ringer
     }

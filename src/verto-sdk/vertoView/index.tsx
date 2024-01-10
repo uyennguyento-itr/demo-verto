@@ -422,18 +422,18 @@ const VertoView = (props: Props) => {
       '[vertoView] activeCall.current is null?',
       activeCall.current == null,
     );
-    if (activeCall.current) {
-      return;
-    }
+    // if(activeCall.current) {
+    //   return;
+    // }
 
     callee = callee || props.callParams.to || 'CH1SN0S1';
     const callParams = {
-      to: '1013737274',
-      from: '1196946341',
-      callerName: 'Hi',
-      // useVideo: true
-      // ...props.callParams,
       // to: callee,
+      // from: '1000',
+      // callerName: 'Hi',
+      ...props.callParams,
+      to: callee,
+      useVideo: false,
     };
 
     const newCall = VertoInstanceManager.makeCall(callParams);
@@ -503,25 +503,18 @@ const VertoView = (props: Props) => {
   };
 
   const videoSwitchHandler = () => {
-    // burak
-    console.log('index.tsx => localStream: ' + JSON.stringify(localStream));
     const localVideoTrack =
       localStream &&
       localStream.getVideoTracks() &&
       localStream.getVideoTracks()[0];
-    console.log('index.tsx => localVideoTrack: ' + localVideoTrack);
+    localVideoTrack.enabled = !localVideoTrack.enabled;
 
-    if (localVideoTrack == null) {
-      VertoInstanceManager.startLocalStream(call.getId(), 'video');
+    if (localVideoTrack.enabled) {
+      setVideoFileIndex(ToolboxImage.Video);
+      setViewType(ViewType.both);
     } else {
-      localVideoTrack.enabled = !localVideoTrack.enabled;
-      if (localVideoTrack.enabled) {
-        setVideoFileIndex(ToolboxImage.Video);
-        setViewType(ViewType.both);
-      } else {
-        setVideoFileIndex(ToolboxImage.NoVideo);
-        setViewType(ViewType.remote);
-      }
+      setVideoFileIndex(ToolboxImage.NoVideo);
+      setViewType(ViewType.remote);
     }
 
     if (props.onVideoMuted) {
@@ -553,10 +546,7 @@ const VertoView = (props: Props) => {
                   onAnswerRejected={rejectIncomingCall}
                 />
               ) : (
-                <DialScreen
-                  callHandler={callHandler}
-                  hangUpHandler={hangUpHandler}
-                />
+                <DialScreen callHandler={callHandler} />
               )}
             </View>
             <View style={{height: 50}}>

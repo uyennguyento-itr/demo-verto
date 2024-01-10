@@ -374,6 +374,11 @@ export default class VertoRTC {
     if (!mediaConstraints.audio && !mediaConstraints.video) {
       handleStream(null);
     } else {
+      console.log(
+        '🚀 ~ file: VertoRTC.js:383 ~ VertoRTC ~ inviteRemotePeerConnection ~ mediaDevices:',
+        mediaDevices,
+      );
+
       mediaDevices
         .getUserMedia(mediaConstraints)
         .then(handleStream)

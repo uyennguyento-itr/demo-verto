@@ -1,7 +1,6 @@
 import { RTCPeerConnection, RTCSessionDescription } from 'react-native-webrtc';
 import BackgroundTimer from 'react-native-background-timer';
 import PeerConnectionParams from './PeerConnectionParams';
-import { RTCSessionDescriptionInit } from 'react-native-webrtc/lib/typescript/RTCSessionDescription';
 
 BackgroundTimer.start();
 
@@ -75,20 +74,31 @@ export default class FSRTCPeerConnection {
         }
 
         iceHandler();
-      } else if (event["candidate"]) {
-        onICE(event["candidate"]);
+      } else if (event.candidate) {
+        onICE(event.candidate);
       }
     };
 
-    peer.ontrack = (event: any) => {
+    //
+    peer.ontrack = event => {
+      console.log("FSRTCPeerConnection ~ ontrack:", event)
+
       const remoteMediaStream = event.streams[0];
 
       if (onRemoteStream) {
+        console.log(
+          '🚀 ~ file: FSRTCPeerConnection.js:86 ~ FSRTCPeerConnection ~ constructor ~ onRemoteStream:',
+          onRemoteStream,
+        );
+
         onRemoteStream(remoteMediaStream);
       }
     };
+    const audioTracks = attachStream.getAudioTracks();
+    peer.addTrack(audioTracks[0], attachStream);
 
-    // MARK ARMAKOM Deprecated
+    const videoTracks = attachStream.getVideoTracks();
+    peer.addTrack(videoTracks[0], attachStream);
     // peer.onaddstream = (event: any) => {
     //   const remoteMediaStream = event.stream;
 
@@ -96,20 +106,12 @@ export default class FSRTCPeerConnection {
     //     onRemoteStream(remoteMediaStream);
     //   }
     // };
-    
-    // MARK ARMAKOM
     // peer.addStream(attachStream);
-    
-    const audioTracks = attachStream.getAudioTracks();
-    peer.addTrack(audioTracks[0], attachStream);
-
-    const videoTracks = attachStream.getVideoTracks();
-    peer.addTrack(videoTracks[0], attachStream);
 
     if (onOfferSDP) {
       peer
         .createOffer(constraints)
-        .then((sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
+        .then(sessionDescription => {
           peer.setLocalDescription(sessionDescription);
           onOfferSDP(sessionDescription);
         })
@@ -123,7 +125,7 @@ export default class FSRTCPeerConnection {
         .catch(onPeerStreamingError);
       peer
         .createAnswer()
-        .then((sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
+        .then(sessionDescription => {
           peer.setLocalDescription(sessionDescription);
           if (onAnswerSDP) {
             onAnswerSDP(sessionDescription);

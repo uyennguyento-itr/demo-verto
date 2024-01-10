@@ -43,9 +43,8 @@ export default class Call {
 
     this.lastState = ENUM.state.new;
     this.state = this.lastState;
-    
-    if(this.params.callID === undefined)
-      this.params.callID = generateGUID();
+
+    if (this.params.callID === undefined) this.params.callID = generateGUID();
 
     this.verto.calls[this.params.callID] = this;
 
@@ -219,9 +218,7 @@ export default class Call {
       state === ENUM.state.purge || ENUM.states[this.state.name][state.name];
     if (this.state === state || !checkStateChange) {
       printError(
-        `Invalid call state change from ${this.state.name} to ${
-          state.name
-        }. ${this}`,
+        `Invalid call state change from ${this.state.name} to ${state.name}. ${this}`,
       );
       this.hangup();
       return false;
@@ -233,7 +230,7 @@ export default class Call {
     this.verto.callbacks.onCallStateChange({
       previous: this.lastState,
       current: this.state,
-      callID: this.params.callID
+      callID: this.params.callID,
     });
 
     const speaker = this.params.useSpeak;
@@ -307,6 +304,11 @@ export default class Call {
 
       case 'verto.bye':
         this.hangup();
+        if (this.params.screenShare) {
+          this.rtc.stopPeer();
+        } else {
+          this.rtc.stop();
+        }
         break;
 
       case 'verto.modify':

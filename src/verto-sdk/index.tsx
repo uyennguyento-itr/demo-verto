@@ -27,16 +27,16 @@ export const VertoTypescriptView =
       };
 */
 
-import Call from './verto-sdk/verto/Call';
-import ConferenceLiveArray from './verto-sdk/conference/ConferenceLiveArray';
-import LoginScreen from './verto-sdk/vertoView/LoginScreen';
-import CallInfoParams from './verto-sdk/models/Call/CallInfoParams';
-import MediaState from './verto-sdk/enums/MediaState.enum';
-import VertoClient from './verto-sdk/verto/VertoClient';
-import VertoInstanceManager from './verto-sdk/vertoView/VertoInstanceManager';
-import VertoParams from './verto-sdk/models/VertoParams';
-import VertoView from './verto-sdk/vertoView/index';
-import ViewType from './verto-sdk/enums/ViewType.enum';
+import Call from './verto/Call';
+import ConferenceLiveArray from './conference/ConferenceLiveArray';
+import LoginScreen from './vertoView/LoginScreen';
+import CallInfoParams from './models/Call/CallInfoParams';
+import MediaState from './enums/MediaState.enum';
+import VertoClient from './verto/VertoClient';
+import VertoInstanceManager from './vertoView/VertoInstanceManager';
+import VertoParams from './models/VertoParams';
+import VertoView from './vertoView/index';
+import ViewType from './enums/ViewType.enum';
 
 export {
   Call,

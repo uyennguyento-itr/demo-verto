@@ -1,8 +1,8 @@
-import { MediaStream } from "react-native-webrtc"
+import { MediaStream, RTCOfferOptions } from "react-native-webrtc"
 
 export default interface PeerConnectionParams {
   attachStream: MediaStream;
-  constraints: any;
+  constraints: RTCOfferOptions;
   iceServers: boolean;
   onICEComplete?: Function;
   type: string;
